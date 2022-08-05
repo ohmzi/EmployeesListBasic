@@ -23,7 +23,6 @@ class ViewModel : ViewModel() {
         call.enqueue(object : Callback<List<EmployeeData>> {
             override fun onResponse(call: Call<List<EmployeeData>>, response: Response<List<EmployeeData>>) {
                 liveDataList.postValue(response.body())
-
             }
 
             override fun onFailure(call: Call<List<EmployeeData>>, t: Throwable) {

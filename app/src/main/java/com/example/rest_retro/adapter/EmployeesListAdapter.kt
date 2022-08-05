@@ -1,14 +1,12 @@
 package com.example.rest_retro.adapter
 
 import android.app.Activity
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rest_retro.R
 import com.example.rest_retro.data.EmployeeData
-import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import kotlinx.android.synthetic.main.employee_list_row.view.*
 
 class EmployeesListAdapter(val activity: Activity) :
@@ -30,7 +28,7 @@ class EmployeesListAdapter(val activity: Activity) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(employeeList?.get(position)!!, activity)
+      //  holder.bind(employeeList?.get(position)!!, activity)
     }
 
     override fun getItemCount(): Int {
@@ -46,17 +44,19 @@ class EmployeesListAdapter(val activity: Activity) :
         val tv_Employee_salary = view.tv_Employee_salary
 
 
-        fun bind(data: EmployeeData, activity: Activity) {
-            data.employee_name.also { tv_Employee_name.text = it }
-            ("ID: " + data.id).also { tv_Id.text = it }
-            ("Age: " + data.employee_age).also { tv_Employee_age.text = it }
-            ("Salary: " + data.employee_salary).also { tv_Employee_salary.text = it }
-            GlideToVectorYou.justLoadImage(
-                activity,
-                Uri.parse(data.profile_image),
-                tv_Profile_image
-            )
+        /* fun bind(data: EmployeeData, activity: Activity) {
+             data.employee_name.also { tv_Employee_name.text = it }
+             ("ID: " + data.id).also { tv_Id.text = it }
+             ("Age: " + data.employee_age).also { tv_Employee_age.text = it }
+             ("Salary: " + data.employee_salary).also { tv_Employee_salary.text = it }
+             GlideToVectorYou.justLoadImage(
+                 activity,
+                 Uri.parse(data.profile_image),
+                 tv_Profile_image
+             )
 
-        }
+         }/
+         */
+
     }
 }

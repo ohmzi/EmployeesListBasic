@@ -5,7 +5,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface RetroServiceInterface {
-    @GET("V2")
+    @GET("v1/employees/")
     fun getEmployeeList():  Call<List<EmployeeData>>
-
 }
