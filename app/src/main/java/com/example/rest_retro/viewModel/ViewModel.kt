@@ -11,9 +11,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ViewModel : ViewModel() {
-    var liveDataList: MutableLiveData<EmployeeData> = MutableLiveData()
+    var liveDataList: MutableLiveData<List<EmployeeData>> = MutableLiveData()
 
-    fun getLiveDataObserver(): MutableLiveData<EmployeeData> {
+    fun getLiveDataObserver(): MutableLiveData<List<EmployeeData>> {
         return liveDataList
     }
 
@@ -22,29 +22,18 @@ class ViewModel : ViewModel() {
         val retroService = retroInstance.create(RetroServiceInterface::class.java)
         val call = retroService.getEmployeeList()
 
-        call.enqueue(object : Callback<EmployeeData> {
-
+        call.enqueue(object : Callback<List<EmployeeData>> {
             override fun onResponse(
-                call: Call<EmployeeData>,
-                response: Response<EmployeeData>,
+                call: Call<List<EmployeeData>>,
+                response: Response<List<EmployeeData>>,
             ) {
-                d(
-                    "MakeAPICall",
-                    "onResponse:"
-                            + response.body()!!.status
-                )
-                liveDataList.postValue(response.body())
+                d("MakeAPICall", "onResponse")
+                // liveDataList.postValue(response.body())
             }
 
-            override fun onFailure(
-                call: Call<EmployeeData>,
-                t: Throwable,
-            ) {
-                d(
-                    "MakeAPICall", "onFailure "
-                            + t.localizedMessage.toString()
-                )
-                liveDataList.postValue(null)
+            override fun onFailure(call: Call<List<EmployeeData>>, t: Throwable) {
+                d("MakeAPICall", "onFailure")
+                //           liveDataList.postValue(null)
             }
         })
     }
