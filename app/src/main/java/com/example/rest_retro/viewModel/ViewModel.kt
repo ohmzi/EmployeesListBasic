@@ -1,5 +1,6 @@
 package com.example.rest_retro.viewModel
 
+import android.util.Log.d
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rest_retro.data.EmployeeData
@@ -20,13 +21,19 @@ class ViewModel : ViewModel() {
         val retroInstance = RetroInstance.getRetroInstance()
         val retroService = retroInstance.create(RetroServiceInterface::class.java)
         val call = retroService.getEmployeeList()
+
         call.enqueue(object : Callback<List<EmployeeData>> {
-            override fun onResponse(call: Call<List<EmployeeData>>, response: Response<List<EmployeeData>>) {
-                liveDataList.postValue(response.body())
+            override fun onResponse(
+                call: Call<List<EmployeeData>>,
+                response: Response<List<EmployeeData>>
+            ) {
+                d("MakeAPICall", "onResponse")
+                // liveDataList.postValue(response.body())
             }
 
             override fun onFailure(call: Call<List<EmployeeData>>, t: Throwable) {
-                liveDataList.postValue(null)
+                d("MakeAPICall", "onFailure")
+                //           liveDataList.postValue(null)
             }
         })
     }
