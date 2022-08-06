@@ -23,16 +23,27 @@ class ViewModel : ViewModel() {
         val call = retroService.getEmployeeList()
 
         call.enqueue(object : Callback<List<EmployeeData>> {
+
             override fun onResponse(
                 call: Call<List<EmployeeData>>,
                 response: Response<List<EmployeeData>>
             ) {
-                d("MakeAPICall", "onResponse")
+                d(
+                    "MakeAPICall",
+                    "onResponse:"
+                            + response.body()!![0].status
+                )
                 // liveDataList.postValue(response.body())
             }
 
-            override fun onFailure(call: Call<List<EmployeeData>>, t: Throwable) {
-                d("MakeAPICall", "onFailure")
+            override fun onFailure(
+                call: Call<List<EmployeeData>>,
+                t: Throwable
+            ) {
+                d(
+                    "MakeAPICall", "onFailure "
+                            + t
+                )
                 //           liveDataList.postValue(null)
             }
         })
