@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class EmployeeData(
     @SerializedName("data")
-    val `data`: List<Data>,
+    val data: List<Data>,
     @SerializedName("message")
     val message: String, // Successfully! All records has been fetched.
     @SerializedName("status")
-    val status: String // success
+    val status: String, // success
 ) {
     data class Data(
         @SerializedName("employee_age")
