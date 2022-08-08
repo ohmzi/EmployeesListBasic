@@ -49,8 +49,7 @@ class EmployeesListAdapter2 :
     }
 
     override fun getItemCount(): Int {
-        return if (employeeList == null) 0
-        else employeeList?.size!!
+        return employeeList?.size ?: 0
     }
 }
 
