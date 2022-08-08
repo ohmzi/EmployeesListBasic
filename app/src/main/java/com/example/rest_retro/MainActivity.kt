@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             if (it != null) {
                 employeesListAdapter2.submitList(it.data)
             } else {
-                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
             }
         }
         viewModel.makeAPICall()
