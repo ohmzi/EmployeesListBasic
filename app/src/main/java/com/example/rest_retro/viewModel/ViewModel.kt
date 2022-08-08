@@ -28,13 +28,13 @@ class ViewModel : ViewModel() {
                 response: Response<EmployeeData>,
             ) {
                 d("MakeAPICall", "onResponse ${response.body()}")
-                d("MakeAPICall", "onResponse ${response.isSuccessful()}")
+                d("MakeAPICall", "onResponse ${response.isSuccessful}")
                  liveDataList.postValue(response.body())
             }
 
             override fun onFailure(call: Call<EmployeeData>, t: Throwable) {
                 d("MakeAPICall", "onFailure")
-                //           liveDataList.postValue(null)
+                liveDataList.postValue(null)
             }
         })
     }
