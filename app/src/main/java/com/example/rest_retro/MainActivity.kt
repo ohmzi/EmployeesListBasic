@@ -5,30 +5,37 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.rest_retro.adapter.EmployeesListAdapter
+import com.example.rest_retro.adapter.EmployeesListAdapter2
 import com.example.rest_retro.databinding.ActivityMainBinding
 import com.example.rest_retro.viewModel.ViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
-private lateinit var binding: ActivityMainBinding
-//private var recyclerAdapter: EmployeesListAdapter? = null
-//private val binding by lazy { ActivityMainBinding(this) }
 
 class MainActivity : AppCompatActivity() {
 
-    private val recyclerAdapter by lazy { EmployeesListAdapter(this) }
+    private val employeesListAdapter2 by lazy  { EmployeesListAdapter2 (this) }
+
+    private lateinit var binding: ActivityMainBinding
+    private val recyclerAdapter by lazy { EmployeesListAdapter2(this) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        initRecyclerView()
-        initViewModel()
+      //  initRecyclerView()
+       initViewModel()
+
+        employeesListRecyclerview2.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = employeesListAdapter2
+        }
     }
 
     private fun initRecyclerView() {
-        binding.employeesListRecyclerview.layoutManager = LinearLayoutManager(this)
-        binding.employeesListRecyclerview.adapter =recyclerAdapter
+     //   binding.employeesListRecyclerview.layoutManager = LinearLayoutManager(this)
+    //    binding.employeesListRecyclerview.adapter = recyclerAdapter
     }
 
 

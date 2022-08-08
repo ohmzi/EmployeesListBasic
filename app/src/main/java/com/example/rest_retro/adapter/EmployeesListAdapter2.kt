@@ -7,37 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rest_retro.R
 import com.example.rest_retro.data.EmployeeData
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
-import kotlinx.android.synthetic.main.employee_list_row.view.*
+import kotlinx.android.synthetic.main.list_adapter_layout.view.*
 
-class EmployeesListAdapter(private val activity: Activity) :
-    RecyclerView.Adapter<EmployeesListAdapter.MyViewHolder>() {
+
+class EmployeesListAdapter2(private val activity: Activity) :
+    ListAdapter<EmployeeData, EmployeesListAdapter2.MyViewHolder>(listDiffCallback()) {
 
     private var employeeList: List<EmployeeData.Data>? = null
 
     fun setEmployeeList(employeeList: List<EmployeeData.Data>?) {
         this.employeeList = employeeList
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MyViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.employee_list_row, parent, false)
-        return MyViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-          holder.bind(employeeList?.get(position)!!, activity)
-    }
-
-    override fun getItemCount(): Int {
-        return if (employeeList == null) 0
-        else employeeList?.size!!
     }
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -56,11 +41,35 @@ class EmployeesListAdapter(private val activity: Activity) :
             GlideToVectorYou.justLoadImage(
                 activity,
                 Uri.parse(data.profileImage),
-                profileImage
-            )
-
+                profileImage)
         }
-
-
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
+        val inflater =
+            LayoutInflater.from(parent.context).inflate(R.layout.list_adapter_layout, parent, false)
+        return MyViewHolder(inflater)
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.bind(employeeList?.get(position)!!, activity)
+    }
+
+    override fun getItemCount(): Int {
+        return if (employeeList == null) 0
+        else employeeList?.size!!
+    }
+}
+
+class listDiffCallback : DiffUtil.ItemCallback<EmployeeData>() {
+    override fun areItemsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun areContentsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {
+        TODO("Not yet implemented")
+    }
+
+
 }
