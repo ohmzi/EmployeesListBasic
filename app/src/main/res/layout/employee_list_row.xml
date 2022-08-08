@@ -2,54 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
-    <ImageView android:id="@+id/tv_Profile_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="10dp"
-        />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="124dp"
+        android:layout_marginTop="10dp"
+        app:cardBackgroundColor="@color/cyan">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/tv_Profile_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp" />
 
-        <TextView android:id="@+id/tv_Employee_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            />
+            android:orientation="vertical">
 
-        <TextView android:id="@+id/tv_Id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:maxLines="3"
-            />
+            <TextView
+                android:id="@+id/tv_Employee_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView android:id="@+id/tv_Employee_age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            />
-        <TextView android:id="@+id/tv_Employee_salary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            />
+            <TextView
+                android:id="@+id/tv_Id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:maxLines="3"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/tv_Employee_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
-    </LinearLayout>
-
+            <TextView
+                android:id="@+id/tv_Employee_salary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

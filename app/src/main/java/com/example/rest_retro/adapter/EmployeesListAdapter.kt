@@ -5,13 +5,15 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rest_retro.R
 import com.example.rest_retro.data.EmployeeData
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import kotlinx.android.synthetic.main.employee_list_row.view.*
 
-class EmployeesListAdapter(val activity: Activity) :
+class EmployeesListAdapter(private val activity: Activity) :
     RecyclerView.Adapter<EmployeesListAdapter.MyViewHolder>() {
 
     private var employeeList: List<EmployeeData.Data>? = null
@@ -39,22 +41,22 @@ class EmployeesListAdapter(val activity: Activity) :
     }
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tv_Profile_image = view.tv_Profile_image
-        val tv_Employee_name = view.tv_Employee_name
-        val tv_Id = view.tv_Id
-        val tv_Employee_age = view.tv_Employee_age
-        val tv_Employee_salary = view.tv_Employee_salary
+        private val profileImage: ImageView = view.tv_Profile_image
+        private val employeeName: TextView = view.tv_Employee_name
+        private val employeeId: TextView = view.tv_Id
+        private val employeeAge: TextView = view.tv_Employee_age
+        private val employeeSalary: TextView = view.tv_Employee_salary
 
 
         fun bind(data: EmployeeData.Data, activity: Activity) {
-            data.employeeName.also { tv_Employee_name.text = it }
-            ("ID: " + data.id).also { tv_Id.text = it }
-            ("Age: " + data.employeeAge).also { tv_Employee_age.text = it }
-            ("Salary: " + data.employeeSalary).also { tv_Employee_salary.text = it }
+            data.employeeName.also { employeeName.text = it }
+            ("ID: " + data.id).also { employeeId.text = it }
+            ("Age: " + data.employeeAge).also { employeeAge.text = it }
+            ("Salary: " + data.employeeSalary).also { employeeSalary.text = it }
             GlideToVectorYou.justLoadImage(
                 activity,
                 Uri.parse(data.profileImage),
-                tv_Profile_image
+                profileImage
             )
 
         }
