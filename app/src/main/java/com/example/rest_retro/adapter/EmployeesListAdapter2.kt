@@ -1,23 +1,19 @@
 package com.example.rest_retro.adapter
 
-import android.app.Activity
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rest_retro.R
 import com.example.rest_retro.data.EmployeeData
-import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import kotlinx.android.synthetic.main.list_adapter_layout.view.*
 
 
-class EmployeesListAdapter2(private val activity: Activity) :
-    ListAdapter<EmployeeData, EmployeesListAdapter2.MyViewHolder>(listDiffCallback()) {
+class EmployeesListAdapter2 :
+    ListAdapter<EmployeeData, EmployeesListAdapter2.MyViewHolder>(ListDiffCallback()) {
 
     private var employeeList: List<EmployeeData.Data>? = null
 
@@ -26,22 +22,17 @@ class EmployeesListAdapter2(private val activity: Activity) :
     }
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val profileImage: ImageView = view.tv_Profile_image
         private val employeeName: TextView = view.tv_Employee_name
         private val employeeId: TextView = view.tv_Id
         private val employeeAge: TextView = view.tv_Employee_age
         private val employeeSalary: TextView = view.tv_Employee_salary
 
 
-        fun bind(data: EmployeeData.Data, activity: Activity) {
+        fun bind(data: EmployeeData.Data) {
             data.employeeName.also { employeeName.text = it }
             ("ID: " + data.id).also { employeeId.text = it }
             ("Age: " + data.employeeAge).also { employeeAge.text = it }
             ("Salary: " + data.employeeSalary).also { employeeSalary.text = it }
-            GlideToVectorYou.justLoadImage(
-                activity,
-                Uri.parse(data.profileImage),
-                profileImage)
         }
     }
 
@@ -54,7 +45,7 @@ class EmployeesListAdapter2(private val activity: Activity) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(employeeList?.get(position)!!, activity)
+        employeeList?.let { holder.bind(it[position]) }
     }
 
     override fun getItemCount(): Int {
@@ -63,7 +54,7 @@ class EmployeesListAdapter2(private val activity: Activity) :
     }
 }
 
-class listDiffCallback : DiffUtil.ItemCallback<EmployeeData>() {
+class ListDiffCallback : DiffUtil.ItemCallback<EmployeeData>() {
     override fun areItemsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {
         TODO("Not yet implemented")
     }
@@ -74,3 +65,4 @@ class listDiffCallback : DiffUtil.ItemCallback<EmployeeData>() {
 
 
 }
+

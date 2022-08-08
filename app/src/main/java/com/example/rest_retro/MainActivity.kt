@@ -6,25 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rest_retro.adapter.EmployeesListAdapter2
-import com.example.rest_retro.databinding.ActivityMainBinding
 import com.example.rest_retro.viewModel.ViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val employeesListAdapter2 by lazy  { EmployeesListAdapter2 (this) }
+    private val employeesListAdapter2 by lazy { EmployeesListAdapter2() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-       initViewModel()
+        initViewModel()
 
         employeesListRecyclerview2.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = employeesListAdapter2
+            employeesListAdapter2.also { adapter = it }
         }
     }
 
