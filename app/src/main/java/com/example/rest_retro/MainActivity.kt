@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this).get(ViewModel::class.java)
         viewModel.getLiveDataObserver().observe(this) {
             if (it != null) {
-                recyclerAdapter.setEmployeeList(it)
+                recyclerAdapter.setEmployeeList(it.data)
                 recyclerAdapter.notifyDataSetChanged() //change to notifyItemChanged
             } else {
                 Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
