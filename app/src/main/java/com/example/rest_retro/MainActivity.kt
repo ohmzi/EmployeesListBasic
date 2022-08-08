@@ -18,24 +18,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         initViewModel()
-
         employeesListRecyclerview2.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             employeesListAdapter2.also { adapter = it }
         }
     }
 
-
-
     private fun initViewModel() {
         val viewModel: ViewModel =
             ViewModelProvider(this).get(ViewModel::class.java)
         viewModel.getLiveDataObserver().observe(this) {
             if (it != null) {
-                employeesListAdapter2.setEmployeeList(it.data)
-                employeesListAdapter2.notifyDataSetChanged() //change to notifyItemChanged
+                employeesListAdapter2.submitList(it.data)
             } else {
                 Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
             }

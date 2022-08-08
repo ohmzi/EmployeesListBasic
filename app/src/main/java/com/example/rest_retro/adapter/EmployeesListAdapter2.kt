@@ -13,13 +13,7 @@ import kotlinx.android.synthetic.main.list_adapter_layout.view.*
 
 
 class EmployeesListAdapter2 :
-    ListAdapter<EmployeeData, EmployeesListAdapter2.MyViewHolder>(ListDiffCallback()) {
-
-    private var employeeList: List<EmployeeData.Data>? = null
-
-    fun setEmployeeList(employeeList: List<EmployeeData.Data>?) {
-        this.employeeList = employeeList
-    }
+    ListAdapter<EmployeeData.Data, EmployeesListAdapter2.MyViewHolder>(ListDiffCallback()) {
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val employeeName: TextView = view.tv_Employee_name
@@ -45,20 +39,19 @@ class EmployeesListAdapter2 :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        employeeList?.let { holder.bind(it[position]) }
-    }
-
-    override fun getItemCount(): Int {
-        return employeeList?.size ?: 0
+        holder.bind(getItem(position))
     }
 }
 
-class ListDiffCallback : DiffUtil.ItemCallback<EmployeeData>() {
-    override fun areItemsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {
+class ListDiffCallback : DiffUtil.ItemCallback<EmployeeData.Data>() {
+    override fun areItemsTheSame(oldItem: EmployeeData.Data, newItem: EmployeeData.Data): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun areContentsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {
+    override fun areContentsTheSame(
+        oldItem: EmployeeData.Data,
+        newItem: EmployeeData.Data,
+    ): Boolean {
         TODO("Not yet implemented")
     }
 
