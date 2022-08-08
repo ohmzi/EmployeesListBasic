@@ -50,6 +50,7 @@ class EmployeesListAdapter2(private val activity: Activity) :
         val inflater =
             LayoutInflater.from(parent.context).inflate(R.layout.list_adapter_layout, parent, false)
         return MyViewHolder(inflater)
+
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {

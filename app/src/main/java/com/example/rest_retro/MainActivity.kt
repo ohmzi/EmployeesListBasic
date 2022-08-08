@@ -15,16 +15,11 @@ class MainActivity : AppCompatActivity() {
 
     private val employeesListAdapter2 by lazy  { EmployeesListAdapter2 (this) }
 
-    private lateinit var binding: ActivityMainBinding
-    private val recyclerAdapter by lazy { EmployeesListAdapter2(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+       setContentView(R.layout.activity_main)
 
-      //  initRecyclerView()
        initViewModel()
 
         employeesListRecyclerview2.apply {
@@ -33,10 +28,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecyclerView() {
-     //   binding.employeesListRecyclerview.layoutManager = LinearLayoutManager(this)
-    //    binding.employeesListRecyclerview.adapter = recyclerAdapter
-    }
 
 
     private fun initViewModel() {
@@ -44,8 +35,8 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this).get(ViewModel::class.java)
         viewModel.getLiveDataObserver().observe(this) {
             if (it != null) {
-                recyclerAdapter.setEmployeeList(it.data)
-                recyclerAdapter.notifyDataSetChanged() //change to notifyItemChanged
+                employeesListAdapter2.setEmployeeList(it.data)
+                employeesListAdapter2.notifyDataSetChanged() //change to notifyItemChanged
             } else {
                 Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
             }
