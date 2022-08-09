@@ -41,11 +41,11 @@ class MainActivity : AppCompatActivity(), EmployeesListAdapter2.RowClickListener
             }
         }
         viewModel.makeAPICall()
-    }
+        }
 
     override fun onDeleteUserClickListener(data: EmployeeData.Data) {
-        // I expected data.remove() to work here
-
+        Toast.makeText(this, "trying to delete ${data.employeeName}", Toast.LENGTH_SHORT).show()
     }
+
 
 }

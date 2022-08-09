@@ -17,6 +17,12 @@ class ViewModel : ViewModel() {
         return liveDataList
     }
 
+    fun deleteLiveData(data: EmployeeData.Data) {
+        d("deleteLiveData", "onResponse")
+        this.deleteLiveData(data)
+        getLiveDataObserver()
+    }
+
     fun makeAPICall() {
         val retroInstance = RetroInstance.getRetroInstance()
         val retroService = retroInstance.create(RetroServiceInterface::class.java)
