@@ -18,9 +18,8 @@ class ViewModel : ViewModel() {
     }
 
     fun deleteLiveData(data: EmployeeData.Data) {
-        d("deleteLiveData", "onResponse")
-        this.deleteLiveData(data)
-        getLiveDataObserver()
+        d("deleteLiveData in ViewModel, trying to delete", data.employeeName)
+        liveDataList.value = liveDataList.value.apply { deleteLiveData(data) }
     }
 
     fun makeAPICall() {

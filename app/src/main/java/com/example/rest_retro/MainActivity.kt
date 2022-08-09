@@ -44,7 +44,15 @@ class MainActivity : AppCompatActivity(), EmployeesListAdapter2.RowClickListener
         }
 
     override fun onDeleteUserClickListener(data: EmployeeData.Data) {
+
         Toast.makeText(this, "trying to delete ${data.employeeName}", Toast.LENGTH_SHORT).show()
+        val viewModel: ViewModel =
+            ViewModelProvider(this).get(ViewModel::class.java)
+        viewModel.getLiveDataObserver().observe(this) {
+            viewModel.deleteLiveData(data)
+            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
+
+        }
     }
 
 
