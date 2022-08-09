@@ -1,5 +1,6 @@
 package com.example.rest_retro.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,11 @@ import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.list_adapter_layout.view.*
 
 
-class EmployeesListAdapter2 :
+class EmployeesListAdapter2(private val listener: RowClickListener) :
     ListAdapter<EmployeeData.Data, EmployeesListAdapter2.MyViewHolder>(ListDiffCallback()) {
 
-    class MyViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class MyViewHolder(private val view: View, private val listener: RowClickListener) :
+        RecyclerView.ViewHolder(view) {
         private val employeeName: TextView = view.tv_Employee_name
         private val employeeId: TextView = view.tv_Id
         private val employeeAge: TextView = view.tv_Employee_age
@@ -31,18 +33,22 @@ class EmployeesListAdapter2 :
                 employeeSalary.text = it
             }
             view.setOnClickListener {
-
+                Log.d("DeleteRow", "${data.id}")
+                listener.onDeleteUserClickListener(data)
             }
 
         }
     }
 
+    interface RowClickListener {
+        fun onDeleteUserClickListener(data: EmployeeData.Data)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
         val inflater =
             LayoutInflater.from(parent.context).inflate(R.layout.list_adapter_layout, parent, false)
-        return MyViewHolder(inflater)
+        return MyViewHolder(inflater, listener)
 
     }
 

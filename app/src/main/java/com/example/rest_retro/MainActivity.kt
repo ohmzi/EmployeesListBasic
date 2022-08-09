@@ -6,13 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rest_retro.adapter.EmployeesListAdapter2
+import com.example.rest_retro.data.EmployeeData
 import com.example.rest_retro.viewModel.ViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), EmployeesListAdapter2.RowClickListener {
 
-    private val employeesListAdapter2 by lazy { EmployeesListAdapter2() }
+    //  private val employeesListAdapter2 by lazy { EmployeesListAdapter2(this) }
+    private lateinit var employeesListAdapter2: EmployeesListAdapter2
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,10 +22,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initViewModel()
         employeesListRecyclerview2.apply {
+            employeesListAdapter2 = EmployeesListAdapter2(this@MainActivity)
+
             layoutManager = LinearLayoutManager(this@MainActivity)
             employeesListAdapter2.also { adapter = it }
         }
     }
+
 
     private fun initViewModel() {
         val viewModel: ViewModel =
@@ -36,6 +41,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         viewModel.makeAPICall()
+    }
+
+    override fun onDeleteUserClickListener(data: EmployeeData.Data) {
+        // I expected data.remove() to work here
+
     }
 
 }
