@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.list_adapter_layout.view.*
 class EmployeesListAdapter2(private val listener: RowClickListener) :
     ListAdapter<EmployeeData.Data, EmployeesListAdapter2.MyViewHolder>(ListDiffCallback()) {
 
+
     class MyViewHolder(private val view: View, private val listener: RowClickListener) :
         RecyclerView.ViewHolder(view) {
         private val employeeName: TextView = view.tv_Employee_name
@@ -24,6 +25,7 @@ class EmployeesListAdapter2(private val listener: RowClickListener) :
         private val employeeAge: TextView = view.tv_Employee_age
         private val employeeSalary: TextView = view.tv_Employee_salary
         private val employeesListRecyclerview2 = view.employeesListRecyclerview2
+
 
         fun bind(data: EmployeeData.Data) {
             data.employeeName.also { employeeName.text = it }
@@ -53,6 +55,7 @@ class EmployeesListAdapter2(private val listener: RowClickListener) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
         holder.bind(getItem(holder.adapterPosition))
 
     }
@@ -60,14 +63,19 @@ class EmployeesListAdapter2(private val listener: RowClickListener) :
 
 class ListDiffCallback : DiffUtil.ItemCallback<EmployeeData.Data>() {
     override fun areItemsTheSame(oldItem: EmployeeData.Data, newItem: EmployeeData.Data): Boolean {
-        TODO("Not yet implemented")
+        return oldItem == newItem
     }
 
     override fun areContentsTheSame(
         oldItem: EmployeeData.Data,
         newItem: EmployeeData.Data,
     ): Boolean {
-        TODO("Not yet implemented")
+        return oldItem.id == newItem.id
     }
+}
+
+
+fun onDeleteUserClickListener(data: EmployeeData.Data) {
+
 }
 

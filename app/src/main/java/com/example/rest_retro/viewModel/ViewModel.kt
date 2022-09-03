@@ -11,15 +11,18 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ViewModel : ViewModel() {
-    var liveDataList: MutableLiveData<EmployeeData> = MutableLiveData()
+    var liveDataList: MutableLiveData<MutableList<EmployeeData.Data>> = MutableLiveData()
 
-    fun getLiveDataObserver(): MutableLiveData<EmployeeData> {
+    fun getLiveDataObserver(): MutableLiveData<MutableList<EmployeeData.Data>> {
         return liveDataList
     }
 
     fun deleteLiveData(data: EmployeeData.Data) {
-        d("deleteLiveData in ViewModel, trying to delete", data.employeeName)
-        liveDataList.value = liveDataList.value.apply { deleteLiveData(data) }
+
+        val list = liveDataList.value?.toMutableList()
+        val toDeleteEmployee = list?.find { it.id == data.id }
+        list?.remove(toDeleteEmployee)
+        liveDataList.value = list
     }
 
     fun makeAPICall() {
@@ -34,7 +37,7 @@ class ViewModel : ViewModel() {
             ) {
                 d("MakeAPICall", "onResponse ${response.body()}")
                 d("MakeAPICall", "onResponse ${response.isSuccessful}")
-                 liveDataList.postValue(response.body())
+                response.body()?.data?.let { liveDataList.postValue(it.toMutableList()) }
             }
 
             override fun onFailure(call: Call<EmployeeData>, t: Throwable) {
