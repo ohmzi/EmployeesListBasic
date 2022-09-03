@@ -1,0 +1,53 @@
+Index: app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.rest_retro.viewModel\n\nimport android.util.Log.d\nimport androidx.lifecycle.MutableLiveData\nimport androidx.lifecycle.ViewModel\nimport com.example.rest_retro.data.EmployeeData\nimport com.example.rest_retro.retrofit.RetroInstance\nimport com.example.rest_retro.retrofit.RetroServiceInterface\nimport retrofit2.Call\nimport retrofit2.Callback\nimport retrofit2.Response\n\nclass ViewModel : ViewModel() {\n    var liveDataList: MutableLiveData<EmployeeData> = MutableLiveData()\n\n    fun getLiveDataObserver(): MutableLiveData<EmployeeData> {\n        return liveDataList\n    }\n\n    fun makeAPICall() {\n        val retroInstance = RetroInstance.getRetroInstance()\n        val retroService = retroInstance.create(RetroServiceInterface::class.java)\n        val call = retroService.getEmployeeList()\n\n        call.enqueue(object : Callback<EmployeeData> {\n            override fun onResponse(\n                call: Call<EmployeeData>,\n                response: Response<EmployeeData>,\n            ) {\n                d(\"MakeAPICall\", \"onResponse ${response.body()}\")\n                d(\"MakeAPICall\", \"onResponse ${response.isSuccessful}\")\n                 liveDataList.postValue(response.body())\n            }\n\n            override fun onFailure(call: Call<EmployeeData>, t: Throwable) {\n                d(\"MakeAPICall\", \"onFailure\")\n                liveDataList.postValue(null)\n            }\n        })\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt b/app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt
+--- a/app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt	(revision d97ce0ec3581f6ca7c46bf7ac1bc49641f61373f)
++++ b/app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt	(date 1660008647259)
+@@ -17,6 +17,11 @@
+         return liveDataList
+     }
+ 
++    fun deleteLiveData(data: EmployeeData.Data) {
++        d("deleteLiveData in ViewModel, trying to delete", data.employeeName)
++        liveDataList.value = liveDataList.value.apply { deleteLiveData(data) }
++    }
++
+     fun makeAPICall() {
+         val retroInstance = RetroInstance.getRetroInstance()
+         val retroService = retroInstance.create(RetroServiceInterface::class.java)
+Index: app/src/main/java/com/example/rest_retro/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.rest_retro\n\nimport android.os.Bundle\nimport android.widget.Toast\nimport androidx.appcompat.app.AppCompatActivity\nimport androidx.lifecycle.ViewModelProvider\nimport androidx.recyclerview.widget.LinearLayoutManager\nimport com.example.rest_retro.adapter.EmployeesListAdapter2\nimport com.example.rest_retro.data.EmployeeData\nimport com.example.rest_retro.viewModel.ViewModel\nimport kotlinx.android.synthetic.main.activity_main.*\n\n\nclass MainActivity : AppCompatActivity(), EmployeesListAdapter2.RowClickListener {\n\n    //  private val employeesListAdapter2 by lazy { EmployeesListAdapter2(this) }\n    private lateinit var employeesListAdapter2: EmployeesListAdapter2\n\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContentView(R.layout.activity_main)\n        initViewModel()\n        employeesListRecyclerview2.apply {\n            employeesListAdapter2 = EmployeesListAdapter2(this@MainActivity)\n\n            layoutManager = LinearLayoutManager(this@MainActivity)\n            employeesListAdapter2.also { adapter = it }\n        }\n    }\n\n\n    private fun initViewModel() {\n        val viewModel: ViewModel =\n            ViewModelProvider(this).get(ViewModel::class.java)\n        viewModel.getLiveDataObserver().observe(this) {\n            if (it != null) {\n                employeesListAdapter2.submitList(it.data)\n            } else {\n                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()\n            }\n        }\n        viewModel.makeAPICall()\n    }\n\n    override fun onDeleteUserClickListener(data: EmployeeData.Data) {\n        // I expected data.remove() to work here\n\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/rest_retro/MainActivity.kt b/app/src/main/java/com/example/rest_retro/MainActivity.kt
+--- a/app/src/main/java/com/example/rest_retro/MainActivity.kt	(revision d97ce0ec3581f6ca7c46bf7ac1bc49641f61373f)
++++ b/app/src/main/java/com/example/rest_retro/MainActivity.kt	(date 1660008545543)
+@@ -44,7 +44,20 @@
+     }
+ 
+     override fun onDeleteUserClickListener(data: EmployeeData.Data) {
++<<<<<<< HEAD
+         // I expected data.remove() to work here
++=======
++
++        Toast.makeText(this, "trying to delete ${data.employeeName}", Toast.LENGTH_SHORT).show()
++        val viewModel: ViewModel =
++            ViewModelProvider(this).get(ViewModel::class.java)
++        viewModel.getLiveDataObserver().observe(this) {
++            viewModel.deleteLiveData(data)
++            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
++
++        }
++    }
++>>>>>>> 1a8e2d3 (onDeleteUserClickListener in MainActivity is empty)
+ 
+     }
+ 

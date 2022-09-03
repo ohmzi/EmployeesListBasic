@@ -1,0 +1,213 @@
+Index: app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.rest_retro.viewModel\n\nimport android.util.Log.d\nimport androidx.lifecycle.MutableLiveData\nimport androidx.lifecycle.ViewModel\nimport com.example.rest_retro.data.EmployeeData\nimport com.example.rest_retro.retrofit.RetroInstance\nimport com.example.rest_retro.retrofit.RetroServiceInterface\nimport retrofit2.Call\nimport retrofit2.Callback\nimport retrofit2.Response\n\nclass ViewModel : ViewModel() {\n    var liveDataList: MutableLiveData<EmployeeData> = MutableLiveData()\n\n    fun getLiveDataObserver(): MutableLiveData<EmployeeData> {\n        return liveDataList\n    }\n\n    fun makeAPICall() {\n        val retroInstance = RetroInstance.getRetroInstance()\n        val retroService = retroInstance.create(RetroServiceInterface::class.java)\n        val call = retroService.getEmployeeList()\n\n        call.enqueue(object : Callback<EmployeeData> {\n            override fun onResponse(\n                call: Call<EmployeeData>,\n                response: Response<EmployeeData>,\n            ) {\n                d(\"MakeAPICall\", \"onResponse ${response.body()}\")\n                d(\"MakeAPICall\", \"onResponse ${response.isSuccessful()}\")\n                 liveDataList.postValue(response.body())\n            }\n\n            override fun onFailure(call: Call<EmployeeData>, t: Throwable) {\n                d(\"MakeAPICall\", \"onFailure\")\n                //           liveDataList.postValue(null)\n            }\n        })\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt b/app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt
+--- a/app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt	(revision 023675d6fb53d49ff8c8a93138a6f49f7098d50e)
++++ b/app/src/main/java/com/example/rest_retro/viewModel/ViewModel.kt	(date 1659951514870)
+@@ -28,8 +28,8 @@
+                 response: Response<EmployeeData>,
+             ) {
+                 d("MakeAPICall", "onResponse ${response.body()}")
+-                d("MakeAPICall", "onResponse ${response.isSuccessful()}")
+-                 liveDataList.postValue(response.body())
++                d("MakeAPICall", "onResponse ${response.isSuccessful}")
++                liveDataList.postValue(response.body())
+             }
+ 
+             override fun onFailure(call: Call<EmployeeData>, t: Throwable) {
+@@ -38,4 +38,8 @@
+             }
+         })
+     }
++
++    fun deleteUserInfo() {
++        liveDataList.value = null
++    }
+ }
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"DesignSurface\">\n    <option name=\"filePathToZoomLevelMap\">\n      <map>\n        <entry key=\"../../../../layout/custom_preview.xml\" value=\"0.5240750126710593\" />\n        <entry key=\"app/src/main/res/layout/employee_list_row.xml\" value=\"0.4830207805372529\" />\n        <entry key=\"app/src/main/res/layout/list_adapter_layout.xml\" value=\"0.4734375\" />\n      </map>\n    </option>\n  </component>\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\" />\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 023675d6fb53d49ff8c8a93138a6f49f7098d50e)
++++ b/.idea/misc.xml	(date 1659947167961)
+@@ -5,7 +5,7 @@
+       <map>
+         <entry key="../../../../layout/custom_preview.xml" value="0.5240750126710593" />
+         <entry key="app/src/main/res/layout/employee_list_row.xml" value="0.4830207805372529" />
+-        <entry key="app/src/main/res/layout/list_adapter_layout.xml" value="0.4734375" />
++        <entry key="app/src/main/res/layout/list_adapter_layout.xml" value="0.49635416666666665" />
+       </map>
+     </option>
+   </component>
+Index: app/src/main/res/layout/list_adapter_layout.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"wrap_content\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    android:orientation=\"horizontal\">\n\n    <androidx.cardview.widget.CardView\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"124dp\"\n        android:layout_marginTop=\"10dp\"\n        app:cardBackgroundColor=\"@color/cyan\">\n\n        <ImageView\n            android:id=\"@+id/tv_Profile_image\"\n            android:layout_width=\"80dp\"\n            android:layout_height=\"80dp\"\n            android:layout_gravity=\"center\"\n            android:layout_marginStart=\"10dp\" />\n\n        <LinearLayout\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:orientation=\"vertical\">\n\n            <TextView\n                android:id=\"@+id/tv_Employee_name\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_margin=\"10dp\"\n                android:textColor=\"@color/black\"\n                android:textSize=\"20sp\"\n                android:textStyle=\"bold\" />\n\n            <TextView\n                android:id=\"@+id/tv_Id\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginStart=\"10dp\"\n                android:maxLines=\"3\"\n                android:textColor=\"@color/black\"\n                android:textSize=\"16sp\" />\n\n            <TextView\n                android:id=\"@+id/tv_Employee_age\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginStart=\"10dp\"\n                android:textColor=\"@color/black\"\n                android:textSize=\"16sp\" />\n\n            <TextView\n                android:id=\"@+id/tv_Employee_salary\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginStart=\"10dp\"\n                android:textColor=\"@color/black\"\n                android:textSize=\"16sp\" />\n        </LinearLayout>\n    </androidx.cardview.widget.CardView>\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/list_adapter_layout.xml b/app/src/main/res/layout/list_adapter_layout.xml
+--- a/app/src/main/res/layout/list_adapter_layout.xml	(revision 023675d6fb53d49ff8c8a93138a6f49f7098d50e)
++++ b/app/src/main/res/layout/list_adapter_layout.xml	(date 1659951514877)
+@@ -11,7 +11,8 @@
+         android:layout_marginTop="10dp"
+         app:cardBackgroundColor="@color/cyan">
+ 
+-        <ImageView
++
++    <ImageView
+             android:id="@+id/tv_Profile_image"
+             android:layout_width="80dp"
+             android:layout_height="80dp"
+Index: app/src/main/java/com/example/rest_retro/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.rest_retro\n\nimport android.os.Bundle\nimport android.widget.Toast\nimport androidx.appcompat.app.AppCompatActivity\nimport androidx.lifecycle.ViewModelProvider\nimport androidx.recyclerview.widget.LinearLayoutManager\nimport com.example.rest_retro.adapter.EmployeesListAdapter2\nimport com.example.rest_retro.databinding.ActivityMainBinding\nimport com.example.rest_retro.viewModel.ViewModel\nimport kotlinx.android.synthetic.main.activity_main.*\n\n\nclass MainActivity : AppCompatActivity() {\n\n    private val employeesListAdapter2 by lazy  { EmployeesListAdapter2 (this) }\n\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n       setContentView(R.layout.activity_main)\n\n       initViewModel()\n\n        employeesListRecyclerview2.apply {\n            layoutManager = LinearLayoutManager(this@MainActivity)\n            adapter = employeesListAdapter2\n        }\n    }\n\n\n\n    private fun initViewModel() {\n        val viewModel: ViewModel =\n            ViewModelProvider(this).get(ViewModel::class.java)\n        viewModel.getLiveDataObserver().observe(this) {\n            if (it != null) {\n                employeesListAdapter2.setEmployeeList(it.data)\n                employeesListAdapter2.notifyDataSetChanged() //change to notifyItemChanged\n            } else {\n                Toast.makeText(this, \"Error in getting list\", Toast.LENGTH_SHORT).show()\n            }\n        }\n        viewModel.makeAPICall()\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/rest_retro/MainActivity.kt b/app/src/main/java/com/example/rest_retro/MainActivity.kt
+--- a/app/src/main/java/com/example/rest_retro/MainActivity.kt	(revision 023675d6fb53d49ff8c8a93138a6f49f7098d50e)
++++ b/app/src/main/java/com/example/rest_retro/MainActivity.kt	(date 1659951514873)
+@@ -6,21 +6,20 @@
+ import androidx.lifecycle.ViewModelProvider
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import com.example.rest_retro.adapter.EmployeesListAdapter2
+-import com.example.rest_retro.databinding.ActivityMainBinding
+ import com.example.rest_retro.viewModel.ViewModel
+ import kotlinx.android.synthetic.main.activity_main.*
+ 
+ 
+ class MainActivity : AppCompatActivity() {
+ 
+-    private val employeesListAdapter2 by lazy  { EmployeesListAdapter2 (this) }
++    private val employeesListAdapter2 by lazy { EmployeesListAdapter2(this) }
+ 
+ 
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+-       setContentView(R.layout.activity_main)
++        setContentView(R.layout.activity_main)
+ 
+-       initViewModel()
++        initViewModel()
+ 
+         employeesListRecyclerview2.apply {
+             layoutManager = LinearLayoutManager(this@MainActivity)
+@@ -29,7 +28,6 @@
+     }
+ 
+ 
+-
+     private fun initViewModel() {
+         val viewModel: ViewModel =
+             ViewModelProvider(this).get(ViewModel::class.java)
+@@ -42,6 +40,12 @@
+             }
+         }
+         viewModel.makeAPICall()
++
++        fun onDeleteUserClickListener() {
++            viewModel.deleteUserInfo()
++            Toast.makeText(this, "Deleted the Row", Toast.LENGTH_SHORT).show()
++
++        }
+     }
+ 
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.rest_retro.adapter\n\nimport android.app.Activity\nimport android.net.Uri\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.ImageView\nimport android.widget.TextView\nimport androidx.recyclerview.widget.DiffUtil\nimport androidx.recyclerview.widget.ListAdapter\nimport androidx.recyclerview.widget.RecyclerView\nimport com.example.rest_retro.R\nimport com.example.rest_retro.data.EmployeeData\nimport com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou\nimport kotlinx.android.synthetic.main.list_adapter_layout.view.*\n\n\nclass EmployeesListAdapter2(private val activity: Activity) :\n    ListAdapter<EmployeeData, EmployeesListAdapter2.MyViewHolder>(listDiffCallback()) {\n\n    private var employeeList: List<EmployeeData.Data>? = null\n\n    fun setEmployeeList(employeeList: List<EmployeeData.Data>?) {\n        this.employeeList = employeeList\n    }\n\n    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {\n        private val profileImage: ImageView = view.tv_Profile_image\n        private val employeeName: TextView = view.tv_Employee_name\n        private val employeeId: TextView = view.tv_Id\n        private val employeeAge: TextView = view.tv_Employee_age\n        private val employeeSalary: TextView = view.tv_Employee_salary\n\n\n        fun bind(data: EmployeeData.Data, activity: Activity) {\n            data.employeeName.also { employeeName.text = it }\n            (\"ID: \" + data.id).also { employeeId.text = it }\n            (\"Age: \" + data.employeeAge).also { employeeAge.text = it }\n            (\"Salary: \" + data.employeeSalary).also { employeeSalary.text = it }\n            GlideToVectorYou.justLoadImage(\n                activity,\n                Uri.parse(data.profileImage),\n                profileImage)\n        }\n    }\n\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {\n\n        val inflater =\n            LayoutInflater.from(parent.context).inflate(R.layout.list_adapter_layout, parent, false)\n        return MyViewHolder(inflater)\n\n    }\n\n    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {\n        holder.bind(employeeList?.get(position)!!, activity)\n    }\n\n    override fun getItemCount(): Int {\n        return if (employeeList == null) 0\n        else employeeList?.size!!\n    }\n}\n\nclass listDiffCallback : DiffUtil.ItemCallback<EmployeeData>() {\n    override fun areItemsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {\n        TODO(\"Not yet implemented\")\n    }\n\n    override fun areContentsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {\n        TODO(\"Not yet implemented\")\n    }\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt b/app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt
+--- a/app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt	(revision 023675d6fb53d49ff8c8a93138a6f49f7098d50e)
++++ b/app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt	(date 1659951514868)
+@@ -19,10 +19,11 @@
+ class EmployeesListAdapter2(private val activity: Activity) :
+     ListAdapter<EmployeeData, EmployeesListAdapter2.MyViewHolder>(listDiffCallback()) {
+ 
+-    private var employeeList: List<EmployeeData.Data>? = null
++    private var employeeList: ArrayList<EmployeeData.Data>? = null
++
+ 
+     fun setEmployeeList(employeeList: List<EmployeeData.Data>?) {
+-        this.employeeList = employeeList
++        this.employeeList = employeeList as ArrayList<EmployeeData.Data>?
+     }
+ 
+     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+@@ -32,7 +33,6 @@
+         private val employeeAge: TextView = view.tv_Employee_age
+         private val employeeSalary: TextView = view.tv_Employee_salary
+ 
+-
+         fun bind(data: EmployeeData.Data, activity: Activity) {
+             data.employeeName.also { employeeName.text = it }
+             ("ID: " + data.id).also { employeeId.text = it }
+@@ -43,6 +43,19 @@
+                 Uri.parse(data.profileImage),
+                 profileImage)
+         }
++
++        fun bind(data: EmployeeData.Data) {
++
++        }
++
++        fun onItemClickListener(data: EmployeeData.Data) {
++
++        }
++    }
++
++    interface RowClickListener {
++        fun onDeleteUserClickListener(data: EmployeeData.Data)
++        fun onItemClickListener(data: EmployeeData.Data)
+     }
+ 
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+@@ -53,8 +66,17 @@
+ 
+     }
+ 
++    // override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
++    //      holder.bind(employeeList?.get(position)!!, activity)
++    // }
++
++
+     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+-        holder.bind(employeeList?.get(position)!!, activity)
++        holder.itemView.setOnClickListener {
++
++            holder.onItemClickListener((employeeList?.get(position) ?: Unit) as EmployeeData.Data)
++        }
++        holder.bind((employeeList?.get(position) ?: Unit) as EmployeeData.Data)
+     }
+ 
+     override fun getItemCount(): Int {
+@@ -65,11 +87,13 @@
+ 
+ class listDiffCallback : DiffUtil.ItemCallback<EmployeeData>() {
+     override fun areItemsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {
+-        TODO("Not yet implemented")
++        //TODO("Not yet implemented")
++        return oldItem.data.equals(newItem.data)
+     }
+ 
+     override fun areContentsTheSame(oldItem: EmployeeData, newItem: EmployeeData): Boolean {
+-        TODO("Not yet implemented")
++        //TODO("Not yet implemented")
++        return oldItem.equals(newItem)
+     }
+ 
+ 

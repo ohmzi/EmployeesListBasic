@@ -1,0 +1,207 @@
+Index: app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.rest_retro.adapter\n\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.TextView\nimport androidx.recyclerview.widget.DiffUtil\nimport androidx.recyclerview.widget.ListAdapter\nimport androidx.recyclerview.widget.RecyclerView\nimport com.example.rest_retro.R\nimport com.example.rest_retro.data.EmployeeData\nimport kotlinx.android.synthetic.main.activity_main.view.*\nimport kotlinx.android.synthetic.main.list_adapter_layout.view.*\n\n\nclass EmployeesListAdapter2 :\n    ListAdapter<EmployeeData.Data, EmployeesListAdapter2.MyViewHolder>(ListDiffCallback()) {\n\n    class MyViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {\n        private val employeeName: TextView = view.tv_Employee_name\n        private val employeeId: TextView = view.tv_Id\n        private val employeeAge: TextView = view.tv_Employee_age\n        private val employeeSalary: TextView = view.tv_Employee_salary\n        private val employeesListRecyclerview2 = view.employeesListRecyclerview2\n\n        fun bind(data: EmployeeData.Data) {\n            data.employeeName.also { employeeName.text = it }\n            (\"ID: \" + data.id).also { employeeId.text = it }\n            (\"Age: \" + data.employeeAge).also { employeeAge.text = it }\n            (\"Salary: \" + data.employeeSalary).also {\n                employeeSalary.text = it\n            }\n            view.setOnClickListener {\n\n            }\n\n        }\n    }\n\n\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {\n\n        val inflater =\n            LayoutInflater.from(parent.context).inflate(R.layout.list_adapter_layout, parent, false)\n        return MyViewHolder(inflater)\n\n    }\n\n    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {\n        holder.bind(getItem(holder.adapterPosition))\n\n    }\n}\n\nclass ListDiffCallback : DiffUtil.ItemCallback<EmployeeData.Data>() {\n    override fun areItemsTheSame(oldItem: EmployeeData.Data, newItem: EmployeeData.Data): Boolean {\n        TODO(\"Not yet implemented\")\n    }\n\n    override fun areContentsTheSame(\n        oldItem: EmployeeData.Data,\n        newItem: EmployeeData.Data,\n    ): Boolean {\n        TODO(\"Not yet implemented\")\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt b/app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt
+--- a/app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt	(revision 3a3b39b729e3b1d7949b4b0d3e2afcd183bfcee8)
++++ b/app/src/main/java/com/example/rest_retro/adapter/EmployeesListAdapter2.kt	(date 1662142882412)
+@@ -1,5 +1,6 @@
+ package com.example.rest_retro.adapter
+ 
++import android.util.Log
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+@@ -13,10 +14,11 @@
+ import kotlinx.android.synthetic.main.list_adapter_layout.view.*
+ 
+ 
+-class EmployeesListAdapter2 :
++class EmployeesListAdapter2(private val listener: RowClickListener) :
+     ListAdapter<EmployeeData.Data, EmployeesListAdapter2.MyViewHolder>(ListDiffCallback()) {
+ 
+-    class MyViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
++    class MyViewHolder(private val view: View, private val listener: RowClickListener) :
++        RecyclerView.ViewHolder(view) {
+         private val employeeName: TextView = view.tv_Employee_name
+         private val employeeId: TextView = view.tv_Id
+         private val employeeAge: TextView = view.tv_Employee_age
+@@ -31,18 +33,22 @@
+                 employeeSalary.text = it
+             }
+             view.setOnClickListener {
+-
++                Log.d("DeleteRow", "${data.id}")
++                listener.onDeleteUserClickListener(data)
+             }
+ 
+         }
+     }
+ 
++    interface RowClickListener {
++        fun onDeleteUserClickListener(data: EmployeeData.Data)
++    }
+ 
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+ 
+         val inflater =
+             LayoutInflater.from(parent.context).inflate(R.layout.list_adapter_layout, parent, false)
+-        return MyViewHolder(inflater)
++        return MyViewHolder(inflater, listener)
+ 
+     }
+ 
+Index: .idea/git_toolbox_prj.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"GitToolBoxProjectSettings\">\n    <option name=\"commitMessageIssueKeyValidationOverride\">\n      <BoolValueOverride>\n        <option name=\"enabled\" value=\"true\" />\n      </BoolValueOverride>\n    </option>\n    <option name=\"commitMessageValidationEnabledOverride\">\n      <BoolValueOverride>\n        <option name=\"enabled\" value=\"true\" />\n      </BoolValueOverride>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/git_toolbox_prj.xml b/.idea/git_toolbox_prj.xml
+--- a/.idea/git_toolbox_prj.xml	(revision 3a3b39b729e3b1d7949b4b0d3e2afcd183bfcee8)
++++ b/.idea/git_toolbox_prj.xml	(date 1662142882454)
+@@ -4,11 +4,13 @@
+     <option name="commitMessageIssueKeyValidationOverride">
+       <BoolValueOverride>
+         <option name="enabled" value="true" />
++        <option name="value" value="true" />
+       </BoolValueOverride>
+     </option>
+     <option name="commitMessageValidationEnabledOverride">
+       <BoolValueOverride>
+         <option name="enabled" value="true" />
++        <option name="value" value="true" />
+       </BoolValueOverride>
+     </option>
+   </component>
+Index: gradle/wrapper/gradle-wrapper.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#Thu Aug 04 21:12:31 EDT 2022\ndistributionBase=GRADLE_USER_HOME\ndistributionUrl=https\\://services.gradle.org/distributions/gradle-7.2-bin.zip\ndistributionPath=wrapper/dists\nzipStorePath=wrapper/dists\nzipStoreBase=GRADLE_USER_HOME\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/gradle/wrapper/gradle-wrapper.properties b/gradle/wrapper/gradle-wrapper.properties
+--- a/gradle/wrapper/gradle-wrapper.properties	(revision 3a3b39b729e3b1d7949b4b0d3e2afcd183bfcee8)
++++ b/gradle/wrapper/gradle-wrapper.properties	(date 1662142882457)
+@@ -1,6 +1,6 @@
+ #Thu Aug 04 21:12:31 EDT 2022
+ distributionBase=GRADLE_USER_HOME
+-distributionUrl=https\://services.gradle.org/distributions/gradle-7.2-bin.zip
++distributionUrl=https\://services.gradle.org/distributions/gradle-7.3.3-bin.zip
+ distributionPath=wrapper/dists
+ zipStorePath=wrapper/dists
+ zipStoreBase=GRADLE_USER_HOME
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\nplugins {\n    id 'com.android.application' version '7.1.2' apply false\n    id 'com.android.library' version '7.1.2' apply false\n    id 'org.jetbrains.kotlin.android' version '1.6.21' apply false\n}\n\ntask clean(type: Delete) {\n    delete rootProject.buildDir\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build.gradle b/build.gradle
+--- a/build.gradle	(revision 3a3b39b729e3b1d7949b4b0d3e2afcd183bfcee8)
++++ b/build.gradle	(date 1662142882460)
+@@ -1,7 +1,7 @@
+ // Top-level build file where you can add configuration options common to all sub-projects/modules.
+ plugins {
+-    id 'com.android.application' version '7.1.2' apply false
+-    id 'com.android.library' version '7.1.2' apply false
++    id 'com.android.application' version '7.2.2' apply false
++    id 'com.android.library' version '7.2.2' apply false
+     id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
+ }
+ 
+Index: app/src/main/java/com/example/rest_retro/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.rest_retro\n\nimport android.os.Bundle\nimport android.widget.Toast\nimport androidx.appcompat.app.AppCompatActivity\nimport androidx.lifecycle.ViewModelProvider\nimport androidx.recyclerview.widget.LinearLayoutManager\nimport com.example.rest_retro.adapter.EmployeesListAdapter2\nimport com.example.rest_retro.viewModel.ViewModel\nimport kotlinx.android.synthetic.main.activity_main.*\n\n\nclass MainActivity : AppCompatActivity() {\n\n    private val employeesListAdapter2 by lazy { EmployeesListAdapter2() }\n\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContentView(R.layout.activity_main)\n        initViewModel()\n        employeesListRecyclerview2.apply {\n            layoutManager = LinearLayoutManager(this@MainActivity)\n            employeesListAdapter2.also { adapter = it }\n        }\n    }\n\n    private fun initViewModel() {\n        val viewModel: ViewModel =\n            ViewModelProvider(this).get(ViewModel::class.java)\n        viewModel.getLiveDataObserver().observe(this) {\n            if (it != null) {\n                employeesListAdapter2.submitList(it.data)\n            } else {\n                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()\n            }\n        }\n        viewModel.makeAPICall()\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/rest_retro/MainActivity.kt b/app/src/main/java/com/example/rest_retro/MainActivity.kt
+--- a/app/src/main/java/com/example/rest_retro/MainActivity.kt	(revision 3a3b39b729e3b1d7949b4b0d3e2afcd183bfcee8)
++++ b/app/src/main/java/com/example/rest_retro/MainActivity.kt	(date 1662142886139)
+@@ -6,13 +6,15 @@
+ import androidx.lifecycle.ViewModelProvider
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import com.example.rest_retro.adapter.EmployeesListAdapter2
++import com.example.rest_retro.data.EmployeeData
+ import com.example.rest_retro.viewModel.ViewModel
+ import kotlinx.android.synthetic.main.activity_main.*
+ 
+ 
+-class MainActivity : AppCompatActivity() {
++class MainActivity : AppCompatActivity(), EmployeesListAdapter2.RowClickListener {
+ 
+-    private val employeesListAdapter2 by lazy { EmployeesListAdapter2() }
++    //  private val employeesListAdapter2 by lazy { EmployeesListAdapter2(this) }
++    private lateinit var employeesListAdapter2: EmployeesListAdapter2
+ 
+ 
+     override fun onCreate(savedInstanceState: Bundle?) {
+@@ -20,11 +22,14 @@
+         setContentView(R.layout.activity_main)
+         initViewModel()
+         employeesListRecyclerview2.apply {
++            employeesListAdapter2 = EmployeesListAdapter2(this@MainActivity)
++
+             layoutManager = LinearLayoutManager(this@MainActivity)
+             employeesListAdapter2.also { adapter = it }
+         }
+     }
+ 
++
+     private fun initViewModel() {
+         val viewModel: ViewModel =
+             ViewModelProvider(this).get(ViewModel::class.java)
+@@ -36,6 +41,19 @@
+             }
+         }
+         viewModel.makeAPICall()
+-    }
++        }
+ 
++    override fun onDeleteUserClickListener(data: EmployeeData.Data) {
++
++        Toast.makeText(this, "trying to delete ${data.employeeName}", Toast.LENGTH_SHORT).show()
++        val viewModel: ViewModel =
++            ViewModelProvider(this).get(ViewModel::class.java)
++        viewModel.getLiveDataObserver().observe(this) {
++            viewModel.deleteLiveData(data)
++            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
++
++        }
++    }
++
++
+ }
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"GradleSettings\">\n    <option name=\"linkedExternalProjectsSettings\">\n      <GradleProjectSettings>\n        <option name=\"testRunner\" value=\"GRADLE\" />\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"gradleJvm\" value=\"11\" />\n        <option name=\"modules\">\n          <set>\n            <option value=\"$PROJECT_DIR$\" />\n            <option value=\"$PROJECT_DIR$/app\" />\n          </set>\n        </option>\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\n      </GradleProjectSettings>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 3a3b39b729e3b1d7949b4b0d3e2afcd183bfcee8)
++++ b/.idea/gradle.xml	(date 1662142886187)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+@@ -13,7 +14,6 @@
+             <option value="$PROJECT_DIR$/app" />
+           </set>
+         </option>
+-        <option name="resolveModulePerSourceSet" value="false" />
+       </GradleProjectSettings>
+     </option>
+   </component>
